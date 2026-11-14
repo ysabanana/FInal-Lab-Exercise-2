@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XMLHttpRequest Lab</title>
+</head>
+<body>
+  <h2>Exploring XMLHttpRequest</h2>
+  
+  <!-- Task 1: Button + Output Div -->
+  <button id="loadData">Load Post Data</button>
+  <div id="output" style="margin-top: 20px; border: 1px solid #ddd; padding: 10px;"></div>
+
+  <!-- Task 2: JavaScript Code -->
+  <script>
+    document.getElementById("loadData").addEventListener("click", function() {
+      const xhr = new XMLHttpRequest();
+
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) { // request finished
+          const output = document.getElementById("output");
+          if (xhr.status === 200) {
+            // Success: parse JSON
+            const data = JSON.parse(xhr.responseText);
+            output.innerHTML = `
+              <strong>Post Title:</strong> ${data.title}<br><br>
+              <strong>Content:</strong> ${data.body}
+            `;
+          } else {
+            // Error handling
+            output.innerHTML = `<span style="color:red;">Error: ${xhr.status} - ${xhr.statusText}</span>`;
+          }
+        }
+      };
+
+      // Open GET request to JSONPlaceholder
+      xhr.open("GET", "https://jsonplaceholder.typicode.com/posts/1", true);
+      xhr.send();
+    });
+  </script>
+</body>
+</html>
